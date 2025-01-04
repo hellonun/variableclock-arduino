@@ -209,7 +209,23 @@ void loop() {
     sprintf(buffer, "%s: %02d", clockAlgoNames[i], y);
     // Serial.println(buffer);
 
-    // Check if the y value has changed
-    if (y != lastY[i]) {
+   // Check if the y value has changed
+     if (y != lastY[i]) {
       if (lastY[i] == 59) {
-        // If the last value was 59, 
+        // If the last value was 59, change the output state to LOW
+        outputState[i] = HIGH;
+        digitalWrite(outputPins[i], outputState[i]);  // Set the output pin state to LOW
+      } else {
+        // Toggle output state for this clock
+        outputState[i] = (outputState[i] == LOW) ? HIGH : LOW;
+        digitalWrite(outputPins[i], outputState[i]);  // Set the output pin state
+      }
+
+      // Update the last y value for this clock
+      lastY[i] = y;
+    }
+  }
+  ////////////////////////////////////////////////////////////
+
+  delay(5); 
+}
